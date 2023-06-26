@@ -61,6 +61,7 @@ reset_shop_button.addEventListener('click', refresh_shop);
 
 
 let displayed_item_info = [];  // text elements for each shop entry
+let disp_i_i_values = [];  // actual values for those text elements
 let displayed_buttons = [];  // button elements for each shop entry
 function refresh_shop() {
     var shop_size = Object.keys(shop_items).length; // number of items in shop
@@ -122,13 +123,33 @@ function refresh_shop() {
         shop_div.append(btn);  // buy button
 
         displayed_item_info.push([nl, shop_item_info, spacing]);
+        disp_i_i_values.push([cost, count]);
         displayed_buttons.push(btn);
 
         btn.addEventListener('click', function() {
             if (cost <= balance) {
                 update_balance(balance - cost);
                 // document.getElementById('shop_entry_sii' + String(displayed_item_info.length - 1)).innerHTML = name + ', $' + String(cost) + ', ' + String(count - 1) + ' available ';
+                let correct_btn = (d) => d.isEqualNode(btn);  // apparently findIndex() takes a function, so this finds the element that is equal to this button
+                let index = displayed_buttons.findIndex(correct_btn);
+                disp_i_i_values[index][1] -= 1
+                let lowered_count = disp_i_i_values[index][1]
+                shop_item_info.innerHTML = name + ', $' + String(cost) + ', ' + String(lowered_count) + ' available';
 
+                if (lowered_count == 0) { // aka sold out
+                    // first, remove the elements from the document
+                    for (let j = 0; j < displayed_item_info[index].length; j++) {
+                        // gotta remove these 1 by 1, since each array element is a list of elements
+                        displayed_item_info[index][j].remove();
+                    }
+                    displayed_buttons[index].remove();
+                    disp_i_i_values[index].remove();
+
+                    // then remove those element references from the arrays
+                    displayed_item_info.splice(index, 1);
+                    displayed_buttons.splice(index, 1);
+                    disp_i_i_values.splice(index, 1);
+                }
             }
         })
     }
