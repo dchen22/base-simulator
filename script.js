@@ -96,27 +96,52 @@ function refresh_shop() {
 
         let item = shop_items[c]; // name, cost, amount
         let name = item[0];
-        let cost = String(item[1]);
-        let count = String(item[2]);
+        let cost = item[1];
+        let count = item[2];
 
         let nl = document.createElement('br')
-        let shop_item_info = document.createTextNode(name + ', $' + cost + ', ' + count + ' available ');
-        let spacing = document.createTextNode('\u00A0\u00A0\u00A0')
+        let shop_item_info = document.createElement('h4')
+        shop_item_info.innerHTML = name + ', $' + String(cost) + ', ' + String(count) + ' available';
+        let spacing = document.createElement('h4');
+        spacing.innerHTML = '\u00A0\u00A0\u00A0';
         let btn = document.createElement("button");
+
+        nl.setAttribute('id', 'shop_entry_nl' + String(displayed_item_info.length));
+        shop_item_info.setAttribute('id', 'shop_entry_sii' + String(displayed_item_info.length));
+        shop_item_info.setAttribute('style', 'display: inline-block; margin: 0;');
+        spacing.setAttribute('id', 'shop_entry_sp' + String(displayed_item_info.length));
+        spacing.setAttribute('style', 'display: inline-block; margin: 0;');
+        btn.setAttribute('id', 'shop_entry_btn' + String(displayed_item_info.length));
         btn.innerHTML = "Buy";
 
 
-        shop_div.appendChild(nl)  // newline
-        shop_div.appendChild(shop_item_info);  // name, cost, count
+        shop_div.append(nl)  // newline
+        shop_div.append(shop_item_info);  // name, cost, count
         shop_div.appendChild(spacing)  // space btwn item info and button
 
-        shop_div.appendChild(btn);  // buy button
+        shop_div.append(btn);  // buy button
 
         displayed_item_info.push([nl, shop_item_info, spacing]);
         displayed_buttons.push(btn);
-    }
-};
 
+        btn.addEventListener('click', function() {
+            if (cost <= balance) {
+                update_balance(balance - cost);
+                // document.getElementById('shop_entry_sii' + String(displayed_item_info.length - 1)).innerHTML = name + ', $' + String(cost) + ', ' + String(count - 1) + ' available ';
+
+            }
+        })
+    }
+}
+
+function buy_from_shop() {
+    // need to add event listeners to each button in <displayed_buttons>
+}
+
+function update_balance(new_balance) {
+    document.getElementById('balance').innerHTML = String(new_balance);
+    balance = new_balance;
+}
 
 
 

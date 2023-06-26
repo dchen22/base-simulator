@@ -5,7 +5,7 @@ export class ItemStack {
     }
 }
 
-export const valid_items_values = { 'ender pearl': 100 };
+export const valid_items_values = { 'ender pearl': 1 };
 
 export const valid_items_arr = Object.keys(valid_items_values);
 
