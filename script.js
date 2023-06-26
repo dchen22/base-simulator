@@ -90,8 +90,10 @@ function refresh_shop() {
 
         }
         displayed_buttons[line].remove(); // remove all button elements
-
     }
+    displayed_buttons.length = 0;
+    displayed_item_info.length = 0;
+    disp_i_i_values.length = 0;
 
     for (const c in shop_items) {
 
