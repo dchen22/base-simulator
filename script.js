@@ -136,6 +136,14 @@ function refresh_shop() {
                 let lowered_count = disp_i_i_values[index][1]
                 shop_item_info.innerHTML = name + ', $' + String(cost) + ', ' + String(lowered_count) + ' available';
 
+                // now add our purchased items to the inventory
+                if (name in inventory) {
+                    inventory[name] += 1;
+                } else {
+                    inventory[name] = 1;
+                }
+                console.log(inventory);
+
                 if (lowered_count == 0) { // aka sold out
                     // first, remove the elements from the document
                     for (let j = 0; j < displayed_item_info[index].length; j++) {
@@ -143,7 +151,6 @@ function refresh_shop() {
                         displayed_item_info[index][j].remove();
                     }
                     displayed_buttons[index].remove();
-                    disp_i_i_values[index].remove();
 
                     // then remove those element references from the arrays
                     displayed_item_info.splice(index, 1);
