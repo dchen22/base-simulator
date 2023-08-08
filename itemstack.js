@@ -5,7 +5,8 @@ export class ItemStack {
     }
 }
 
-export const valid_items_values = { 'ender pearl': 1 };
+// all valid item names, and their price
+export const valid_items_values = { 'ender pearl': 1, 'bottle of honey': 2 };
 
 export const valid_items_arr = Object.keys(valid_items_values);
 

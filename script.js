@@ -91,6 +91,7 @@ function refresh_shop() {
         }
         displayed_buttons[line].remove(); // remove all button elements
     }
+    // these deletions must be done outside for loop
     displayed_buttons.length = 0;
     displayed_item_info.length = 0;
     disp_i_i_values.length = 0;
@@ -140,11 +141,15 @@ function refresh_shop() {
 
                 // now add our purchased items to the inventory
                 if (name in inventory) {
-                    inventory[name] += 1;
+                    // remember inventory[name][0] is the current count
+                    update_inventory_item(name, inventory[name][0] + 1);
                 } else {
-                    inventory[name] = 1;
+                    let new_entry = document.createElement('new_entry' + String(Object.keys(inventory).length));  // element for displaying each item type in inventory
+                    let newline = document.createElement('br');
+                    inventory[name] = [1, [newline, new_entry]];
+                    document.getElementById('inventory_menu').appendChild(newline);
+                    document.getElementById('inventory_menu').appendChild(new_entry);
                 }
-                console.log(inventory);
 
                 if (lowered_count == 0) { // aka sold out
                     // first, remove the elements from the document
@@ -166,6 +171,15 @@ function refresh_shop() {
 
 function buy_from_shop() {
     // need to add event listeners to each button in <displayed_buttons>
+}
+
+function update_inventory_item(item_name, new_count) {
+    inventory[item_name][0] = new_count;
+    inventory[item_name][1][1].innerHTML = item_name + ' ' + String(inventory[item_name][0])
+}
+
+function show_inventory() {
+    let inventory_div = document.getElementById('inventory_menu');
 }
 
 function update_balance(new_balance) {
