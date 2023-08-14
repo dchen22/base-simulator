@@ -5,7 +5,7 @@ let balance = 0;
 let inventory = {};
 let storages_list = {};
 let shop_items = [];
-let income_list = {};
+let income_list = [];
 
 // menu buttons
 let gen_man_button = document.getElementById('generate_manually_btn');
@@ -22,7 +22,6 @@ let menu_list = {
     'INCOME_MENU': document.getElementById('income_menu')
 }
 let current_menu = 'INVENTORY_MENU'; // just make a default
-
 
 
 gen_man_button.addEventListener("click", function() {
@@ -149,6 +148,8 @@ function refresh_shop() {
                     inventory[name] = [1, [newline, new_entry]];
                     document.getElementById('inventory_menu').appendChild(newline);
                     document.getElementById('inventory_menu').appendChild(new_entry);
+
+                    update_inventory_item(name, 1);
                 }
 
                 if (lowered_count == 0) { // aka sold out
@@ -175,7 +176,7 @@ function buy_from_shop() {
 
 function update_inventory_item(item_name, new_count) {
     inventory[item_name][0] = new_count;
-    inventory[item_name][1][1].innerHTML = item_name + ' ' + String(inventory[item_name][0])
+    inventory[item_name][1][1].innerHTML = item_name + ' (' + String(inventory[item_name][0]) + ')'
 }
 
 function show_inventory() {
@@ -183,8 +184,17 @@ function show_inventory() {
 }
 
 function update_balance(new_balance) {
+    // updates the displayed balance
     document.getElementById('balance').innerHTML = String(new_balance);
     balance = new_balance;
+}
+
+function generate_income_per_sec() {
+    for (let i = 0; i < income_list.length; i++) {
+        update_balance(balance + income_list[i]);
+    }
+
+    setTimeout(generate_income_per_sec, 1000);
 }
 
 
